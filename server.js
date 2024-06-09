@@ -1,5 +1,5 @@
 import express from 'express';
-import sequelize from './config/db.js';
+import sequelize from './config/database.js';
 import swaggerRouter from './swagger.js';
 import authRoutes from './src/api/routes/AuthRoutes.js';
 import userRoutes from './src/api/routes/UserRoutes.js';
@@ -11,8 +11,8 @@ import testRoutes from './src/api/routes/TestRoutes.js';
 import tipRoutes from './src/api/routes/TipRoutes.js';
 import messageRoutes from './src/api/routes/MessageRoutes.js';
 import { PORT } from './config/env.js';
-import logger from './src/utils/Logger.js';
-import db from './config/database.js';
+import logger from './src/utils/logger.js';
+import './src/infrastructure/events/eventBus.js'; 
 
 const app = express();
 
@@ -28,7 +28,7 @@ app.use('/api/test', testRoutes);
 app.use('/api/tip', tipRoutes);
 app.use('/api/message', messageRoutes);
 
-// Configuração do Swagger
+
 app.use(swaggerRouter);
 
 const startServer = async () => {
@@ -45,4 +45,9 @@ const startServer = async () => {
     }
 };
 
-startServer();
+if (process.env.NODE_ENV !== 'test') {
+    startServer();
+}
+
+export default app; 
+

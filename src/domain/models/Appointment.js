@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../../../config/db";
-import User from "./User";
+import sequelize from "../../../config/database.js";
+import User from "./User.js";
 
-const AppointMent = sequelize.define('Appointment', {
+const Appointment = sequelize.define('Appointment', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -37,9 +37,9 @@ const AppointMent = sequelize.define('Appointment', {
     updatedAt:'atualizadoEm',
 });
 
-User.hasMany(AppointMent, { ForeingKey: 'idUsuario'})
-User.hasMany(AppointMent, { ForeingKey: 'idProfissional' })
-AppointMent.belongTo(User, { as: 'usuario', ForeingKey: 'idUsuario'})
-AppointMent.belongTo(User, { as: 'profissional', ForeingKey: 'idProfissional'})
+User.hasMany(Appointment, { foreignKey: 'idUsuario' });
+User.hasMany(Appointment, { foreignKey: 'idProfissional' });
+Appointment.belongsTo(User, { as: 'usuario', foreignKey: 'idUsuario' });
+Appointment.belongsTo(User, { as: 'profissional', foreignKey: 'idProfissional' });
 
-export default AppointMent;
+export default Appointment;

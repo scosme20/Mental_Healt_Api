@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import User from './User.js'
-import sequelize from "../../../config/db";
+import sequelize from "../../../config/database.js";
 
 const Forum = sequelize.define('Forum', {
     id: {

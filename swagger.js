@@ -14,11 +14,11 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:3000', // URL do servidor onde a API está rodando
+                url: 'http://localhost:5955', 
             },
         ],
     },
-    apis: ['./src/api/routes/*.js', './src/api/controllers/*.js'], // Caminhos para os arquivos que contêm anotações do Swagger
+    apis: ['./src/api/routes/*.js', './src/api/controllers/*.js'], 
 };
 
 const specs = swaggerJsdoc(options);

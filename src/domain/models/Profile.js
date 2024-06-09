@@ -1,6 +1,6 @@
 import { DataTypes, ForeignKeyConstraintError } from "sequelize";
-import sequelize from "../../../../config/db";
-import User from "./User";
+import sequelize from "../../../config/database.js";
+import User from "./User.js";
 import { profile } from "winston";
 
 const Profile = sequelize.define('Profile', {
