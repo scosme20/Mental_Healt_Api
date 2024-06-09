@@ -12,6 +12,7 @@ import tipRoutes from './src/api/routes/TipRoutes.js';
 import messageRoutes from './src/api/routes/MessageRoutes.js';
 import { PORT } from './config/env.js';
 import logger from './src/utils/Logger.js';
+import db from './config/database.js';
 
 const app = express();
 
