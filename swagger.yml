@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: API de Autenticação
+  version: 1.0.0
+  description: API para operações de autenticação de usuários
+
+servers:
+  - url: http://localhost:3000/api
+
+tags:
+  - name: Autenticação
+    description: Operações de autenticação
+
+paths:
+  /auth/register:
+    post:
+      summary: Registrar um novo usuário
+      tags:
+        - Autenticação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nomeDeUsuario:
+                  type: string
+                senha:
+                  type: string
+                papel:
+                  type: string
+      responses:
+        '201':
+          description: Usuário registrado com sucesso
+        '400':
+          description: Erro ao registrar usuário
+
+  /auth/login:
+    post:
+      summary: Fazer login
+      tags:
+        - Autenticação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nomeDeUsuario:
+                  type: string
+                senha:
+                  type: string
+      responses:
+        '200':
+          description: Login bem-sucedido
+        '400':
+          description: Credenciais inválidas

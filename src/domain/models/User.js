@@ -22,8 +22,9 @@ const User = sequelize.define('User', {
   },
 }, {
   timestamps: true,
-  createdAt: 'criadoEm',
-  updatedAt: 'AtualizadoEm',
+  createdAt: 'createdAt', 
+  updatedAt: 'updatedAt', 
 });
 
 export default User;
+

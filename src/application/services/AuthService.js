@@ -1,66 +1,45 @@
-/**
- * @swagger
- * tags:
- *   name: Autenticação
- *   description: Operações de autenticação
- */
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import UserRepository from '../../domain/repositories/UserRepository.js';
+import { JWT_SECRET } from '../../../config/env.js';
 
 class AuthService {
-    /**
-     * @swagger
-     * /api/auth/register:
-     *   post:
-     *     summary: Registrar um novo usuário
-     *     tags: [Autenticação]
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               nomeDeUsuario:
-     *                 type: string
-     *               senha:
-     *                 type: string
-     *               papel:
-     *                 type: string
-     *     responses:
-     *       201:
-     *         description: Usuário registrado com sucesso
-     *       400:
-     *         description: Erro ao registrar usuário
-     */
     async register(nomeDeUsuario, senha, papel) {
-        // Lógica para registrar um novo usuário
+        let user = await UserRepository.findByUsername(nomeDeUsuario);
+        if (user) {
+            throw new Error('Usuário já existe');
+        }
+
+
+        const hashedPassword = await bcrypt.hash(senha, 10);
+        
+        user = await UserRepository.create({ nomeDeUsuario, senha: hashedPassword, papel });
+
+        const payload = { userId: user.id, papel: user.papel };
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '5h' });
+
+        return token;
     }
 
-    /**
-     * @swagger
-     * /api/auth/login:
-     *   post:
-     *     summary: Fazer login
-     *     tags: [Autenticação]
-     *     requestBody:
-     *       required: true
-     *       content:
-     *         application/json:
-     *           schema:
-     *             type: object
-     *             properties:
-     *               nomeDeUsuario:
-     *                 type: string
-     *               senha:
-     *                 type: string
-     *     responses:
-     *       200:
-     *         description: Login bem-sucedido
-     *       400:
-     *         description: Credenciais inválidas
-     */
     async login(nomeDeUsuario, senha) {
-        // Lógica para fazer login
+
+        const user = await UserRepository.findByUsername(nomeDeUsuario);
+        if (!user) {
+            throw new Error('Credenciais inválidas');
+        }
+
+        const isMatch = await bcrypt.compare(senha, user.senha);
+        if (!isMatch) {
+            throw new Error('Credenciais inválidas');
+        }
+
+        const payload = { userId: user.id, papel: user.papel };
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '5h' });
+
+        return token;
     }
 }
 
 export default new AuthService();
+
+

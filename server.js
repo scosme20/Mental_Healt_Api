@@ -12,7 +12,7 @@ import tipRoutes from './src/api/routes/TipRoutes.js';
 import messageRoutes from './src/api/routes/MessageRoutes.js';
 import { PORT } from './config/env.js';
 import logger from './src/utils/logger.js';
-import './src/infrastructure/events/eventBus.js'; 
+import './src/infrastructure/events/eventBus.js';
 
 const app = express();
 
@@ -49,5 +49,6 @@ if (process.env.NODE_ENV !== 'test') {
     startServer();
 }
 
-export default app; 
+export default app;
+
 
