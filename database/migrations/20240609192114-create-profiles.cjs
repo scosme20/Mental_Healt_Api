@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Profiles', {
       id: {
         type: Sequelize.INTEGER,
@@ -10,13 +10,12 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: 'Users', 
+          model: 'Users',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       bio: {
         type: Sequelize.TEXT
@@ -30,25 +29,9 @@ module.exports = {
         allowNull: false
       }
     });
-
-
-    await queryInterface.addConstraint('Users', {
-      fields: ['id'], 
-      type: 'foreign key',
-      name: 'fk_user_profile', 
-      references: {
-        table: 'Profiles', 
-        field: 'userId' 
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
-    });
   },
 
-  down: async (queryInterface, Sequelize) => {
-
-    await queryInterface.removeConstraint('Users', 'fk_user_profile');
-
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Profiles');
   }
 };

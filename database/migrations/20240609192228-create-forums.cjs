@@ -1,30 +1,30 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Forums', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      userId: {
+      idUsuario: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: 'Users', 
+          model: 'Users',
           key: 'id'
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        allowNull: false
       },
-      title: {
+      titulo: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      content: {
+      conteudo: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -35,26 +35,11 @@ module.exports = {
         allowNull: false
       }
     });
-
-
-    await queryInterface.addConstraint('Forums', {
-      fields: ['userId'], 
-      type: 'foreign key',
-      name: 'fk_forum_user', 
-      references: {
-        table: 'Users', 
-        field: 'id' 
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
-    });
   },
 
-  down: async (queryInterface, Sequelize) => {
-
-    await queryInterface.removeConstraint('Forums', 'fk_forum_user');
-
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Forums');
   }
 };
+
 

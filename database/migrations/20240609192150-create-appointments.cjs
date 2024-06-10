@@ -1,38 +1,38 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Appointments', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      userId: {
+      idUsuario: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: 'Users', 
+          model: 'Users',
           key: 'id'
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        allowNull: false
       },
-      professionalId: {
+      idProfissional: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: 'Users', 
+          model: 'Users',
           key: 'id'
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        allowNull: false
       },
-      date: {
+      data: {
         type: Sequelize.DATE,
         allowNull: false
       },
-      details: {
+      detalhes: {
         type: Sequelize.TEXT
       },
       createdAt: {
@@ -44,39 +44,9 @@ module.exports = {
         allowNull: false
       }
     });
-
- 
-    await queryInterface.addConstraint('Appointments', {
-      fields: ['userId'], 
-      type: 'foreign key',
-      name: 'fk_appointment_user', 
-      references: {
-        table: 'Users', 
-        field: 'id' 
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
-    });
-
-    await queryInterface.addConstraint('Appointments', {
-      fields: ['professionalId'], 
-      type: 'foreign key',
-      name: 'fk_appointment_professional', 
-      references: {
-        table: 'Users', 
-        field: 'id' 
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
-    });
   },
 
-  down: async (queryInterface, Sequelize) => {
-
-    await queryInterface.removeConstraint('Appointments', 'fk_appointment_user');
-    await queryInterface.removeConstraint('Appointments', 'fk_appointment_professional');
-
-
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Appointments');
   }
 };
